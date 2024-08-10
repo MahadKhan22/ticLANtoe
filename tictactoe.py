@@ -1,5 +1,21 @@
 import sys
 
+
+def main():
+    global list
+    list = []
+    print("input 'f' to forfeit a match, input 'q' for row and column to quit the game\n")
+    while True:
+        list.append(game())
+
+
+def interruptHandler():
+    xScore = list.count("x")
+    oScore = list.count("o")
+    print(f"\nfinal score:\nx: {xScore}\no: {oScore}")
+    sys.exit()
+
+
 def showBoard():
     global board
     for i in range(3):
@@ -41,29 +57,31 @@ def inputMove(col, row, player):
             board[row][col] = player
             return True
         else:
-            print("\nERROR: position filled!\n")
+            print("\nERROR: position filled!\ntry again:")
             return False
     else:
-        print(("\nERROR: invalid position!\n"))
+        print(("\nERROR: invalid position!\ntry again:"))
         return False
 
 
 def game():
     global board
     board = [["-"] *3 for i in range(3)]
+    showBoard()
     Xmoves = 0
     while True:
 
         moved = False
         while not moved:
             player = "x"
-            col = input("col: ")
-            row = input("row: ")
-            if col == "q" or row == "q":
+
+            if (col:=input("col: ")) == "f" or (row:=input("row: ")) == "f":
                 print(f"\n{player} forfeits")
                 if player == "x":
                     return "o"
                 return "x"
+            elif (col=="q" and row=="q"):
+                interruptHandler()
             moved = inputMove(col, row, player)
 
         showBoard()
@@ -71,33 +89,26 @@ def game():
             return(player)
         Xmoves += 1
         if Xmoves == 5:
-            sys.exit("\ntie!\n")
+            print("\ntie!\n")
         
 
         moved = False
         while not moved:
             player = "o"
-            col = input("col: ")
-            row = input("row: ")
-            if col == "q" or row == "q":
+            if (col:=input("col: ")) == "f" or (row:=input("row: ")) == "f":
                 print(f"\n{player} forfeits")
                 if player == "x":
                     return "o"
                 return "x"
+            elif (col=="q" and row=="q"):
+                interruptHandler()
             moved = inputMove(col, row, player)
 
         showBoard()
         if returnVal:=checkWin():
+            print(f"{player} wins!")
             return(player)
 
 
 if __name__ == "__main__":
-    list = []
-    print("input 'q' to forfeit a match, input 'Ctrl+c' to end the game\n")
-    while True:
-        try:
-            list.append(game())
-        except KeyboardInterrupt:
-            xScore = list.count("x")
-            oScore = list.count("o")
-            sys.exit(f"\n\nfinal score:\nx: {xScore}\no: {oScore}")
+    main()
