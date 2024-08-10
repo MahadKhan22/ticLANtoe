@@ -4,7 +4,7 @@ import sys
 def main():
     global list
     list = []
-    print("input 'f' to forfeit a match, input 'q' for row and column to quit the game\n")
+    print("\nmade by MahadKhan22 and BaihusReal\ninput 'f' to forfeit a match.\ninput 'q' for both row and column to quit the game.\nhave fun! :D\n")
     while True:
         list.append(game())
 
@@ -12,7 +12,7 @@ def main():
 def interruptHandler():
     xScore = list.count("x")
     oScore = list.count("o")
-    print(f"\nfinal score:\nx: {xScore}\no: {oScore}")
+    print(f"\nfinal scores:\nx: {xScore}\no: {oScore}")
     sys.exit()
 
 
