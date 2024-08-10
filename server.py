@@ -6,7 +6,7 @@ FORMAT = 'utf-8'
 #Setting the port, and getting my local IP adress using the SERVER = ... line <- ignore this
 PORT = 5050
 #ENTER THE HOSTER"S PUBLIC IP BELOW IN THE SERVER variable
-SERVER = "58.65.198.124"
+SERVER = "" ################ enter own ip
 
 print(SERVER)
 ADDR = (SERVER,PORT)
