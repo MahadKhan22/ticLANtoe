@@ -1,7 +1,6 @@
 import pytest, sys, re
 from project import main, cont, discontinue, checkWin, showBoard, announce, inputValidate
 
-
 def test_main_invalid_one(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda _: "game")
     #since sys.exit() is called on invalid input
@@ -16,9 +15,11 @@ def test_main_invalid_two(monkeypatch):
 
 #FOR THE SAKE OF YOUR SANITY I RECOMMEND NOT EVEN LOOKING AT THIS ONE
 def test_input_validate(monkeypatch):
-    #counter attribute for the fake_pormpter function
+    #counter attribute for the fake_prompter function
     #Using it in this weird index way because getting UnboundLocalError
     count = [0]
+
+    monkeypatch.delattr("project.showBoard")
 
     #Scenarios to test and their expected results (which i know)
     scenarios = ["1 1", "2 3", "3 2", "f f", "4 4", "1 x", "tacos apples", "1 2 3 4 5"]
@@ -57,3 +58,25 @@ def test_input_validate(monkeypatch):
         else:
             sys.exit("You messed up")
 #FOR THE SAKE OF YOUR SANITY I RECOMMEND NOT EVEN LOOKING AT THIS ONE
+
+
+def getBoard(a="-", b="-", c="-", d="-", e="-", f="-", g="-", h="-", i="-"):
+    return [[a,b,c],
+            [d,e,f],
+            [g,h,i]]
+
+def test_checkWin(monkeypatch):
+
+
+    monkeypatch.delattr("project.announce")
+
+    assert checkWin() == False
+
+
+
+def test_checkWin2(monkeypatch):
+
+    monkeypatch.delattr("project.announce")
+
+    board = getBoard(a="o",b="x",c="x",d="o",e="o", f="-", g="-", h="-", i="-")
+    assert checkWin() == False
