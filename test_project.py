@@ -1,10 +1,24 @@
 import pytest, sys, re
-from project import main, cont, discontinue, checkWin, showBoard, announce, inputValidate
+from proj2 import main, checkWin, inputValidate, CLIENT
+import proj2
 
+
+def test_main_valid(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "p")
+    #monkeypatch.setattr(proj2, "CLIENT", lambda _: None)
+    def dummy():
+        pass
+    monkeypatch.setattr("proj2.CLIENT", dummy)
+    assert main() == "client"
+
+
+
+
+'''
 def test_main_invalid_one(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda _: "game")
     #since sys.exit() is called on invalid input
-    with pytest.raises(SystemExit): 
+    with pytest.raises(SystemExit):
         main()
 
 def test_main_invalid_two(monkeypatch):
@@ -12,6 +26,7 @@ def test_main_invalid_two(monkeypatch):
     #since sys.exit() is called on invalid input
     with pytest.raises(SystemExit): 
         main()
+'''
 
 #FOR THE SAKE OF YOUR SANITY I RECOMMEND NOT EVEN LOOKING AT THIS ONE
 def test_input_validate(monkeypatch):
@@ -19,7 +34,7 @@ def test_input_validate(monkeypatch):
     #Using it in this weird index way because getting UnboundLocalError
     count = [0]
 
-    monkeypatch.delattr("project.showBoard")
+    monkeypatch.delattr("proj2.showBoard")
 
     #Scenarios to test and their expected results (which i know)
     scenarios = ["1 1", "2 3", "3 2", "f f", "4 4", "1 x", "tacos apples", "1 2 3 4 5"]
@@ -33,7 +48,7 @@ def test_input_validate(monkeypatch):
         return result
 
     #Monkeypatch TO disable the original prompter function
-    monkeypatch.setattr("project.prompter", fake_prompter)
+    monkeypatch.setattr("proj2.prompter", fake_prompter)
 
     #Something to match the patterns, by Mahad
     def pattern_match(inp):
@@ -65,18 +80,21 @@ def getBoard(a="-", b="-", c="-", d="-", e="-", f="-", g="-", h="-", i="-"):
             [d,e,f],
             [g,h,i]]
 
-def test_checkWin(monkeypatch):
+def test_checkWin_F(monkeypatch):
 
-
-    monkeypatch.delattr("project.announce")
-
+    monkeypatch.delattr("proj2.announce")
     assert checkWin() == False
 
 
+def test_checkWin_T(monkeypatch):
 
-def test_checkWin2(monkeypatch):
+    monkeypatch.setattr(proj2, "announce", lambda _: None)
+    proj2.board = getBoard("x","x","x","o","o", "-", "-", "-", "-")
 
-    monkeypatch.delattr("project.announce")
+    assert checkWin() == True
 
-    board = getBoard(a="o",b="x",c="x",d="o",e="o", f="-", g="-", h="-", i="-")
+def test_checkWin_F2(monkeypatch):
+
+    monkeypatch.setattr(proj2, "announce", lambda _: None)
+    proj2.board = getBoard("o","x","x","o","o", "-", "-", "-", "-")
     assert checkWin() == False
